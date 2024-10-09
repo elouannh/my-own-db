@@ -6,7 +6,7 @@
 /*   By: ehosta <ehosta@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:04:37 by ehosta            #+#    #+#             */
-/*   Updated: 2024/10/09 14:47:36 by ehosta           ###   ########.fr       */
+/*   Updated: 2024/10/09 16:37:05 by ehosta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 #include <stddef.h>
 
 #define MAX_LEN 16384
+
+typedef enum {
+    META_COMMAND_SUCCESS,
+    META_COMMAND_UNRECOGNIZED_COMMAND
+  } MetaCommandResult;
+
+typedef enum { PREPARE_SUCCESS, PREPARE_UNRECOGNIZED_STATEMENT } PrepareResult;
 
 int repl_inputs(void);
 

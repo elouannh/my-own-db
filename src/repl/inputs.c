@@ -6,7 +6,7 @@
 /*   By: ehosta <ehosta@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:59:53 by ehosta            #+#    #+#             */
-/*   Updated: 2024/10/09 15:20:56 by ehosta           ###   ########.fr       */
+/*   Updated: 2024/10/09 16:38:16 by ehosta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 
-void print_prompt(void) { write(1, "$ my-own-db:\n", 13); }
+void print_prompt(void) { printf("my-own-db > "); }
 
 void print_input_buffer(const InputBuffer *input_buffer) {
     printf("buffer:\t%s\n", input_buffer->buffer);
@@ -51,6 +51,17 @@ void read_input_buffer(InputBuffer* input_buffer) {
     input_buffer->input_length = j;
 }
 
+MetaCommandResult meta_command(InputBuffer* input_buffer) {
+    if (strcmp(input_buffer->buffer, ".exit") == 0) {
+        free(input_buffer->buffer);
+        free(input_buffer);
+        printf("See you later. ;)\n\n");
+        exit(EXIT_SUCCESS);
+    }
+
+    return META_COMMAND_UNRECOGNIZED_COMMAND;
+}
+
 int repl_inputs(void) {
     InputBuffer* input_buffer = create_input_buffer();
 
@@ -58,11 +69,14 @@ int repl_inputs(void) {
         print_prompt();
         read_input_buffer(input_buffer);
 
-        if (strcmp(input_buffer->buffer, "exit") == 0) {
-            free(input_buffer->buffer);
-            free(input_buffer);
-            printf("See you later. ;)\n\n");
-            exit(EXIT_SUCCESS);
+        if (input_buffer->buffer[0] == '.') {
+            switch (meta_command(input_buffer)) {
+                case (META_COMMAND_SUCCESS):
+                    continue;
+                case (META_COMMAND_UNRECOGNIZED_COMMAND):
+                    printf("Unrecognized command: %s\n", input_buffer->buffer);
+                    continue;
+            }
         }
 
         printf("Unrecognized command: %s", input_buffer->buffer);

@@ -107,18 +107,18 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "main.c",
+			"path" : "src/main.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "repl/inputs.c",
+			"path" : "src/repl/inputs.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "repl/inputs.h",
+			"path" : "src/repl/inputs.h",
 			"sourceGroupIndex" : 1
 		}
 	],
