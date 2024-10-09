@@ -1,8 +1,10 @@
 # ninja log v6
 3	68	7501851835421537	CMakeFiles/my_own_db.dir/repl/inputs.c.obj	c0383bc8ae016537
 3	60	7501824823194395	CMakeFiles/my_own_db.dir/main.c.obj	544277761936cf14
-69	128	7501851836081727	my_own_db.exe	a52450d30b9d617f
-1	189	7501879000237308	build.ninja	c92c7770b4e95f38
-1	53	7501879000412908	CMakeFiles/my_own_db.dir/src/main.c.obj	dad2e1d299c9e780
-4	61	7501879000438182	CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj	701c956716c00b41
 61	134	7501879001016506	my_own_db.exe	1f99e38a9ada19d4
+1	189	7501960245094463	build.ninja	c92c7770b4e95f38
+4	61	7501879000438182	CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj	701c956716c00b41
+1	53	7501879000412908	CMakeFiles/my_own_db.dir/src/main.c.obj	dad2e1d299c9e780
+3	54	7501968149167149	CMakeFiles/my_own_db.dir/src/main.c.obj	dad2e1d299c9e780
+8	76	7501968149222698	CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj	701c956716c00b41
+76	147	7501968149897535	my_own_db.exe	1f99e38a9ada19d4

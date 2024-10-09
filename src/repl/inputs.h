@@ -6,7 +6,7 @@
 /*   By: ehosta <ehosta@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:04:37 by ehosta            #+#    #+#             */
-/*   Updated: 2024/10/09 16:37:05 by ehosta           ###   ########.fr       */
+/*   Updated: 2024/10/09 18:59:29 by ehosta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,11 @@ typedef struct {
     char *buffer;
     ssize_t input_length;
 } InputBuffer;
+
+typedef enum { STATEMENT_INSERT, STATEMENT_SELECT } StatementType;
+
+typedef struct {
+    StatementType type;
+} Statement;
 
 #endif
