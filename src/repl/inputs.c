@@ -6,7 +6,7 @@
 /*   By: ehosta <ehosta@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:59:53 by ehosta            #+#    #+#             */
-/*   Updated: 2024/10/10 15:22:37 by ehosta           ###   ########.fr       */
+/*   Updated: 2024/10/10 15:44:12 by ehosta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ MetaCommandResult prepare_statement(const InputBuffer *input_buffer, Statement *
     return PREPARE_UNRECOGNIZED_STATEMENT;
 }
 
-void execute_statement(Statement* statement) {
+void execute_statement(const Statement* statement) {
     switch (statement->type) {
         case (STATEMENT_INSERT):
             ft_putstr("This is where we would do an insert.\n");
@@ -84,6 +84,8 @@ int repl_inputs(void) {
     while (input_buffer) {
         print_prompt();
         read_input_buffer(input_buffer);
+
+        ft_split(input_buffer->buffer, " ");
 
         if (input_buffer->buffer[0] == '.') {
             switch (do_meta_command(input_buffer)) {
