@@ -61,6 +61,18 @@ build CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj: C_COMPILER__my_own_db_unsc
   OBJECT_DIR = CMakeFiles\my_own_db.dir
   OBJECT_FILE_DIR = CMakeFiles\my_own_db.dir\src\repl
 
+build CMakeFiles/my_own_db.dir/src/lib/ft_string.c.obj: C_COMPILER__my_own_db_unscanned_Debug C$:/Users/panda/CLionProjects/my-own-db/src/lib/ft_string.c || cmake_object_order_depends_target_my_own_db
+  DEP_FILE = CMakeFiles\my_own_db.dir\src\lib\ft_string.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\my_own_db.dir
+  OBJECT_FILE_DIR = CMakeFiles\my_own_db.dir\src\lib
+
+build CMakeFiles/my_own_db.dir/src/lib/ft_print.c.obj: C_COMPILER__my_own_db_unscanned_Debug C$:/Users/panda/CLionProjects/my-own-db/src/lib/ft_print.c || cmake_object_order_depends_target_my_own_db
+  DEP_FILE = CMakeFiles\my_own_db.dir\src\lib\ft_print.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\my_own_db.dir
+  OBJECT_FILE_DIR = CMakeFiles\my_own_db.dir\src\lib
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target my_own_db
@@ -69,7 +81,7 @@ build CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj: C_COMPILER__my_own_db_unsc
 #############################################
 # Link the executable my_own_db.exe
 
-build my_own_db.exe: C_EXECUTABLE_LINKER__my_own_db_Debug CMakeFiles/my_own_db.dir/src/main.c.obj CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj
+build my_own_db.exe: C_EXECUTABLE_LINKER__my_own_db_Debug CMakeFiles/my_own_db.dir/src/main.c.obj CMakeFiles/my_own_db.dir/src/repl/inputs.c.obj CMakeFiles/my_own_db.dir/src/lib/ft_string.c.obj CMakeFiles/my_own_db.dir/src/lib/ft_print.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\my_own_db.dir

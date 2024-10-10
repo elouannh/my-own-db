@@ -6,21 +6,14 @@
 /*   By: ehosta <ehosta@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 10:59:53 by ehosta            #+#    #+#             */
-/*   Updated: 2024/10/09 19:07:31 by ehosta           ###   ########.fr       */
+/*   Updated: 2024/10/10 15:22:37 by ehosta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inputs.h"
+# include "../lib/lib.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-void print_prompt(void) { printf("my-own-db > "); }
-
-void print_input_buffer(const InputBuffer *input_buffer) {
-    printf("buffer:\t%s\n", input_buffer->buffer);
-    printf("length:\t%lld\n", input_buffer->input_length);
-}
 
 InputBuffer* create_input_buffer(void) {
     InputBuffer* buffer = malloc(sizeof(InputBuffer));
@@ -51,10 +44,10 @@ void read_input_buffer(InputBuffer* input_buffer) {
 }
 
 MetaCommandResult do_meta_command(InputBuffer* input_buffer) {
-    if (strcmp(input_buffer->buffer, ".exit") == 0) {
+    if (ft_strncmp(input_buffer->buffer, ".exit", -1) == 0) {
         free(input_buffer->buffer);
         free(input_buffer);
-        printf("See you later. ;)\n\n");
+        ft_putstr("See you later. ;)\n\n");
         exit(EXIT_SUCCESS);
     }
 
@@ -62,11 +55,11 @@ MetaCommandResult do_meta_command(InputBuffer* input_buffer) {
 }
 
 MetaCommandResult prepare_statement(const InputBuffer *input_buffer, Statement *statement) {
-    if (strncmp(input_buffer->buffer, "insert", 6) == 0) {
+    if (ft_strncmp(input_buffer->buffer, "insert", 6) == 0) {
         statement->type = STATEMENT_INSERT;
         return PREPARE_SUCCESS;
     }
-    if (strncmp(input_buffer->buffer, "select", 6) == 0) {
+    if (ft_strncmp(input_buffer->buffer, "select", 6) == 0) {
         statement->type = STATEMENT_SELECT;
         return PREPARE_SUCCESS;
     }
@@ -77,10 +70,10 @@ MetaCommandResult prepare_statement(const InputBuffer *input_buffer, Statement *
 void execute_statement(Statement* statement) {
     switch (statement->type) {
         case (STATEMENT_INSERT):
-            printf("This is where we would do an insert.\n");
+            ft_putstr("This is where we would do an insert.\n");
         break;
         case (STATEMENT_SELECT):
-            printf("This is where we would do a select.\n");
+            ft_putstr("This is where we would do a select.\n");
         break;
     }
 }
@@ -97,7 +90,9 @@ int repl_inputs(void) {
                 case (META_COMMAND_SUCCESS):
                     continue;
                 case (META_COMMAND_UNRECOGNIZED_COMMAND):
-                    printf("Unrecognized command: %s\n", input_buffer->buffer);
+                    ft_putstr("Unrecognized command: ");
+                    ft_putstr(input_buffer->buffer);
+                    ft_putstr("\n");
                     continue;
             }
         }
@@ -108,7 +103,9 @@ int repl_inputs(void) {
             case (PREPARE_SUCCESS):
                 break;
             case (PREPARE_UNRECOGNIZED_STATEMENT):
-                printf("Unrecognized keyword at start of '%s'.\n", input_buffer->buffer);
+                ft_putstr("Unrecognized keyword at start of '");
+                ft_putstr(input_buffer->buffer);
+                ft_putstr("'.\n");
                 continue;
         }
 
