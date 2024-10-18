@@ -12,6 +12,7 @@
 
 #include "../lib/main.h"
 
-int main() {
-    repl_inputs();
+int main()
+{
+	repl_inputs();
 }

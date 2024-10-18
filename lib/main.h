@@ -13,44 +13,59 @@
 #ifndef MAIN_H
 # define MAIN_H
 
+# define COLUMN_MAX_LEN 16384
+# define COLUMN_USER_USERNAME_SIZE 32
+# define COLUMN_USER_EMAIL_SIZE 255
 # define MAX_LEN 16384
-# define USER_USERNAME_SIZE 32
-# define USER_EMAIL_SIZE 255
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-typedef enum {
-    META_COMMAND_SUCCESS,
-    META_COMMAND_UNRECOGNIZED_COMMAND
+typedef enum
+{
+	META_COMMAND_SUCCESS,
+	META_COMMAND_UNRECOGNIZED_COMMAND
 } MetaCommandResult;
-typedef enum {
-    PREPARE_SUCCESS,
-    PREPARE_UNRECOGNIZED_STATEMENT,
-    PREPARE_BAD_SYNTAX,
-    PREPARE_EMPTY_COMMAND,
+
+typedef enum
+{
+	PREPARE_SUCCESS,
+	PREPARE_UNRECOGNIZED_STATEMENT,
+	PREPARE_BAD_SYNTAX,
+	PREPARE_EMPTY_COMMAND,
 } PrepareResult;
-typedef enum {
-    STATEMENT_INSERT,
-    STATEMENT_SELECT
+
+typedef enum
+{
+	STATEMENT_INSERT,
+	STATEMENT_SELECT
 } StatementType;
 
-typedef struct {
-    char *buffer;
-    ssize_t input_length;
+typedef struct
+{
+	char *buffer;
+	ssize_t input_length;
 } InputBuffer;
-typedef struct {
-    StatementType type;
-} Statement;
-typedef struct {
-    char **args;
-    size_t parsed_args;
-} ParsedArgs;
-typedef struct {
-    uint32_t id;
-    char username[USER_USERNAME_SIZE];
-    char email[USER_EMAIL_SIZE];
+
+typedef struct
+{
+	uint32_t id;
+	char username[COLUMN_USER_USERNAME_SIZE];
+	char email[COLUMN_USER_EMAIL_SIZE];
 } UserRow;
+
+typedef struct
+{
+	StatementType type;
+	UserRow user_row;
+} Statement;
+
+typedef struct
+{
+	char **args;
+	size_t parsed_args;
+} ParsedArgs;
 
 InputBuffer* create_input_buffer(void);
 void read_input_buffer(InputBuffer* input_buffer);
@@ -70,4 +85,4 @@ void ft_st_putnbr(size_t n);
 void print_input_buffer(const InputBuffer *input_buffer);
 void print_prompt(void);
 
-#endif //MAIN_H
+#endif
