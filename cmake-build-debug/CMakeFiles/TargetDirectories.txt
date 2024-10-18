@@ -1,3 +1,0 @@
-C:/Users/panda/CLionProjects/my-own-db/cmake-build-debug/CMakeFiles/my_own_db.dir
-C:/Users/panda/CLionProjects/my-own-db/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/panda/CLionProjects/my-own-db/cmake-build-debug/CMakeFiles/rebuild_cache.dir
