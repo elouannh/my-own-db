@@ -72,7 +72,7 @@ size_t count_words(const char *s, const char *charset) {
 char *ft_strncpy(char *dest, const char *src, const size_t n) {
     size_t i = 0;
 
-    if (n == -1) {
+    if (n == (size_t)-1) {
         while (dest[i] && src[i]) {
             dest[i] = src[i];
             i++;
@@ -139,7 +139,7 @@ void ft_putstr(const char *s) {
 }
 
 void ft_sst_putnbr(ssize_t n) {
-    if (n <= LONG_LONG_MIN)
+    if (n <= LLONG_MIN)
         return ft_putstr("-9223372036854775808");
     if (n < 0) {
         n = -n;
