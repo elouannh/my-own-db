@@ -13,6 +13,7 @@
 #include "../lib/main.h"
 #include <limits.h>
 #include <unistd.h>
+#include <string.h>
 
 ssize_t ft_strlen(const char *s) {
 	ssize_t i = 0;
