@@ -15,14 +15,14 @@
 #include <unistd.h>
 #include <string.h>
 
-ssize_t ft_strlen(const char *s) {
+ssize_t ft_strlen(char *s) {
 	ssize_t i = 0;
 
 	while (s[i]) i++;
 	return i;
 }
 
-ssize_t ft_strncmp(const char *s1, const char *s2, const ssize_t n) {
+ssize_t ft_strncmp(char *s1, char *s2, ssize_t n) {
 	if (n == -1) {
 		while (*s1 && *s1 == *s2) {
 			s1++;
@@ -41,7 +41,7 @@ ssize_t ft_strncmp(const char *s1, const char *s2, const ssize_t n) {
 	return *s1 - *s2;
 }
 
-int is_charset_member(const char c, const char *charset) {
+int is_charset_member(char c, char *charset) {
 	int i = 0;
 
 	while (charset[i] && charset[i] != c)
@@ -49,7 +49,7 @@ int is_charset_member(const char c, const char *charset) {
 	return charset[i] != '\0';
 }
 
-size_t count_words(const char *s, const char *charset) {
+size_t count_words(char *s, char *charset) {
 	size_t count = 0;
 	size_t i = 0;
 
@@ -64,7 +64,7 @@ size_t count_words(const char *s, const char *charset) {
 	return count;
 }
 
-char *ft_strncpy(char *dest, const char *src, const size_t n) {
+char *ft_strncpy(char *dest, char *src, size_t n) {
 	size_t i = 0;
 
 	if (n == (size_t)-1) {
@@ -84,8 +84,8 @@ char *ft_strncpy(char *dest, const char *src, const size_t n) {
 	return dest;
 }
 
-void ft_split_buffer(const char *s, const char *charset, ParsedArgs *parsed_args) {
-	const size_t words_count = count_words(s, charset);
+void ft_split_buffer(char *s, char *charset, ParsedArgs *parsed_args) {
+	size_t words_count = count_words(s, charset);
 	char **words = malloc(words_count * sizeof(char *));
 
 	if (!words)
@@ -122,25 +122,41 @@ void ft_split_buffer(const char *s, const char *charset, ParsedArgs *parsed_args
 	parsed_args->parsed_args = words_count;
 }
 
-void ft_putchar(const char c) {
+void ft_putchar(char c) {
 	write(1, &c, 1);
 }
 
-void ft_putstr(const char *s) {
+void ft_putstr(char *s) {
 	if (!*s) return;
 
 	write(1, s, ft_strlen(s));
 }
 
-void ft_sst_putnbr(ssize_t n) {
-	if (n <= LLONG_MIN)
-		return ft_putstr("-9223372036854775808");
+void ft_putuint(uint32_t n)
+{
+	if (n >= 10)
+	{
+		ft_putuint(n / 10);
+		n = n % 10;
+	}
+
+	ft_putchar(n + '0');
+	ft_putchar('\n');
+}
+
+void ft_putint(int32_t n)
+{
+	if (n <= INT32_MIN) {
+		write(1, "-2147483648", 1);
+		return ;
+	}
 	if (n < 0) {
-		n = -n;
-		ft_putstr("-");
+		n *= -1;
+		write(1, "-", 1);
 	}
-	if (n >= 10) {
-		ft_sst_putnbr(n / 10);
+	if (n >= 10)
+	{
+		ft_putint(n / 10);
 		n = n % 10;
 	}
 
@@ -148,22 +164,36 @@ void ft_sst_putnbr(ssize_t n) {
 	ft_putchar('\n');
 }
 
-void ft_st_putnbr(size_t n) {
-	if (n >= 10) {
-		ft_st_putnbr(n / 10);
-		n = n % 10;
-	}
-
-	ft_putchar(n + '0');
-	ft_putchar('\n');
-}
-
-void print_input_buffer(const InputBuffer *input_buffer) {
+void print_input_buffer(InputBuffer *input_buffer) {
 	ft_putstr("buffer:\t");
 	ft_putstr(input_buffer->buffer);
 	ft_putstr("\nlength:\t");
-	ft_sst_putnbr(input_buffer->input_length);
+	ft_putint(input_buffer->input_length);
 	ft_putstr("\n");
 }
 
 void print_prompt(void) { ft_putstr("my-own-db > "); }
+
+void print_row(Row *row)
+{
+	ft_putstr("(");
+	ft_putuint(row->id);
+	ft_putstr(", ");
+	ft_putstr(row->username);
+	ft_putstr(", ");
+	ft_putstr(row->email);
+	ft_putstr(")");
+}
+
+void print_parsed_args(ParsedArgs *parsed_args)
+{
+	size_t words = 0;
+
+	while (words < parsed_args->parsed_args)
+	{
+		ft_putstr(parsed_args->args[words]);
+		printf("%s", parsed_args->args[words]);
+		ft_putstr("$\n");
+		words++;
+	}
+}

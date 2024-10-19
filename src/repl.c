@@ -68,11 +68,12 @@ MetaCommandResult do_meta_command(InputBuffer* input_buffer)
 	return META_COMMAND_UNRECOGNIZED_COMMAND;
 }
 
-PrepareResult prepare_statement(const InputBuffer *input_buffer, Statement *statement, ParsedArgs *parsed_args)
+PrepareResult prepare_statement(InputBuffer *input_buffer, Statement *statement, ParsedArgs *parsed_args)
 {
 	if (parsed_args->parsed_args == 0)
 		return PREPARE_EMPTY_COMMAND;
-	if (ft_strncmp(input_buffer->buffer, "insert", 6) == 0)
+	printf("%s and %ld", parsed_args->args[0], ft_strncmp(parsed_args->args[0], "insert", -1));
+	if (ft_strncmp(parsed_args->args[0], "insert", 6) == 0)
 	{
 		statement->type = STATEMENT_INSERT;
 		if (parsed_args->parsed_args != 4)
@@ -108,7 +109,7 @@ ExecuteResult execute_select(Table *table)
 	for (uint32_t i = 0; i < table->num_rows; i++)
 	{
 		deserialize_row(row_slot(table, i), &row);
-		printf("ROW");
+		print_row(&row);
 	}
 	return EXECUTE_SUCCESS;
 }
@@ -128,7 +129,11 @@ ExecuteResult execute_statement(Statement* statement, Table *table)
 }
 
 Table *new_table() {
-	Table *table = malloc(sizeof(Table));
+	Table *table = (Table *)malloc(sizeof(Table));
+
+	if (table == NULL)
+		return NULL;
+
 	table->num_rows = 0;
 
 	for (uint32_t i = 0; i < TABLE_MAX_PAGES; i++)
@@ -141,65 +146,6 @@ void free_table(Table *table)
 	for (int i = 0; table->pages[i]; i++)
 		free(table->pages[i]);
 	free(table);
-}
-
-int repl_inputs(void)
-{
-	Table *table = new_table();
-	InputBuffer* input_buffer = create_input_buffer();
-
-	while (input_buffer)
-	{
-		print_prompt();
-		read_input_buffer(input_buffer);
-
-		ParsedArgs parsed_args;
-		ft_split_buffer(input_buffer->buffer, " ", &parsed_args);
-
-		if (input_buffer->buffer[0] == '.')
-		{
-			switch (do_meta_command(input_buffer))
-			{
-				case (META_COMMAND_SUCCESS):
-					continue;
-				case (META_COMMAND_UNRECOGNIZED_COMMAND):
-					ft_putstr("Unrecognized command: ");
-					ft_putstr(input_buffer->buffer);
-					ft_putstr("\n");
-					continue;
-			}
-		}
-
-		Statement statement;
-
-		switch(prepare_statement(input_buffer, &statement, &parsed_args))
-		{
-			case (PREPARE_SUCCESS):
-				break;
-			case (PREPARE_BAD_SYNTAX):
-				ft_putstr("Bad syntax of arguments.\n");
-				continue;
-			case (PREPARE_EMPTY_COMMAND):
-				continue;
-			case (PREPARE_UNRECOGNIZED_STATEMENT):
-				ft_putstr("Unrecognized keyword at start of '");
-				ft_putstr(input_buffer->buffer);
-				ft_putstr("'.\n");
-				continue;
-		}
-
-		switch (execute_statement(&statement, table))
-		{
-			case (EXECUTE_SUCCESS):
-				ft_putstr("Executed.\n");
-				break;
-			case (EXECUTE_TABLE_FULL):
-				ft_putstr("Error: the table is full.\n");
-				break;
-		}
-	}
-
-	return EXIT_SUCCESS;
 }
 
 void serialize_row(Row *source, void *destination)
@@ -227,4 +173,64 @@ void *row_slot(Table *table, uint32_t row_num)
 	uint32_t row_offset = row_num % ROWS_PER_PAGE;
 	uint32_t byte_offset = row_offset * ROW_SIZE;
 	return page + byte_offset;
+}
+
+int repl_inputs(void)
+{
+	Table *table = new_table();
+	InputBuffer *input_buffer = create_input_buffer();
+
+	while (input_buffer)
+	{
+		print_prompt();
+		read_input_buffer(input_buffer);
+
+		ParsedArgs parsed_args;
+		ft_split_buffer(input_buffer->buffer, " ", &parsed_args);
+		print_parsed_args(&parsed_args);
+
+		if (input_buffer->buffer[0] == '.')
+		{
+			switch (do_meta_command(input_buffer))
+			{
+			case (META_COMMAND_SUCCESS):
+				continue;
+			case (META_COMMAND_UNRECOGNIZED_COMMAND):
+				ft_putstr("Unrecognized command: ");
+				ft_putstr(input_buffer->buffer);
+				ft_putstr("\n");
+				continue;
+			}
+		}
+
+		Statement statement;
+
+		switch (prepare_statement(input_buffer, &statement, &parsed_args))
+		{
+		case (PREPARE_SUCCESS):
+			break;
+		case (PREPARE_BAD_SYNTAX):
+			ft_putstr("Bad syntax of arguments.\n");
+			continue;
+		case (PREPARE_EMPTY_COMMAND):
+			continue;
+		case (PREPARE_UNRECOGNIZED_STATEMENT):
+			ft_putstr("Unrecognized keyword at start of '");
+			ft_putstr(input_buffer->buffer);
+			ft_putstr("'.\n");
+			continue;
+		}
+
+		switch (execute_statement(&statement, table))
+		{
+		case (EXECUTE_SUCCESS):
+			ft_putstr("Executed.\n");
+			break;
+		case (EXECUTE_TABLE_FULL):
+			ft_putstr("Error: the table is full.\n");
+			break;
+		}
+	}
+
+	return EXIT_SUCCESS;
 }
