@@ -50,32 +50,33 @@ typedef enum
 	STATEMENT_SELECT
 } StatementType;
 
-typedef struct
+typedef struct SInputBuffer
 {
 	char *buffer;
-	ssize_t input_length;
+	int32_t input_length;
 } InputBuffer;
 
-typedef struct
+typedef struct SRow
 {
 	uint32_t id;
 	char username[COLUMN_USERNAME_SIZE];
 	char email[COLUMN_EMAIL_SIZE];
 } Row;
 
-typedef struct
+typedef struct SStatement
 {
 	StatementType type;
 	Row row_to_insert;
 } Statement;
 
-typedef struct
+typedef struct SParsedArgs
 {
 	char **args;
 	size_t parsed_args;
 } ParsedArgs;
 
-typedef struct {
+typedef struct STable
+{
 	uint32_t num_rows;
 	void *pages[TABLE_MAX_PAGES];
 } Table;
@@ -87,7 +88,7 @@ PrepareResult prepare_statement(InputBuffer *input_buffer, Statement *statement,
 ExecuteResult execute_insert(Statement *statement, Table *table);
 ExecuteResult execute_select(Table *table);
 ExecuteResult execute_statement(Statement *statement, Table *table);
-int repl_inputs(void);
+int repl_inputs(Table *table, int loop);
 ssize_t ft_strncmp(char *s1, char *s2, ssize_t n);
 int is_charset_member(char c, char *charset);
 size_t count_words(char *s, char *charset);
@@ -97,12 +98,11 @@ void ft_putchar(char c);
 void ft_putstr(char *s);
 void ft_putuint(uint32_t n);
 void ft_putint(int32_t n);
-void print_input_buffer(InputBuffer *input_buffer);
-void print_prompt(void);
 void print_row(Row *row);
 void print_parsed_args(ParsedArgs *parsed_args);
 void serialize_row(Row *source, void *destination);
 void deserialize_row(void *source, Row *destination);
 void *row_slot(Table *table, uint32_t row_num);
+Table *new_table();
 
 #endif

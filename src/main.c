@@ -14,5 +14,6 @@
 
 int main()
 {
-	repl_inputs();
+	Table *table = new_table();
+	repl_inputs(table, 1);
 }

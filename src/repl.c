@@ -26,7 +26,7 @@ const uint32_t TABLE_MAX_ROWS = ROWS_PER_PAGE * TABLE_MAX_PAGES;
 
 InputBuffer* create_input_buffer(void)
 {
-	InputBuffer* buffer = malloc(sizeof(InputBuffer));
+	InputBuffer* buffer = (InputBuffer *)malloc(sizeof(InputBuffer));
 
 	if (!buffer)
 		return NULL;
@@ -39,7 +39,7 @@ InputBuffer* create_input_buffer(void)
 void read_input_buffer(InputBuffer* input_buffer)
 {
 	if (input_buffer->buffer == NULL)
-		input_buffer->buffer = malloc(sizeof(char) * MAX_LEN);
+		input_buffer->buffer = (char *)malloc(sizeof(char) * MAX_LEN);
 
 	int i = MAX_LEN;
 	int j = 0;
@@ -129,7 +129,7 @@ ExecuteResult execute_statement(Statement* statement, Table *table)
 }
 
 Table *new_table() {
-	Table *table = (Table *)malloc(sizeof(Table));
+	Table *table = malloc(sizeof(Table));
 
 	if (table == NULL)
 		return NULL;
@@ -175,14 +175,16 @@ void *row_slot(Table *table, uint32_t row_num)
 	return page + byte_offset;
 }
 
-int repl_inputs(void)
+int repl_inputs(Table *table, int loop)
 {
-	Table *table = new_table();
 	InputBuffer *input_buffer = create_input_buffer();
 
-	while (input_buffer)
+	if (!input_buffer)
+		return EXIT_FAILURE;
+
+	while (loop)
 	{
-		print_prompt();
+		ft_putstr("my-own-db > ");
 		read_input_buffer(input_buffer);
 
 		ParsedArgs parsed_args;

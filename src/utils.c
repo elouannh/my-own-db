@@ -164,16 +164,6 @@ void ft_putint(int32_t n)
 	ft_putchar('\n');
 }
 
-void print_input_buffer(InputBuffer *input_buffer) {
-	ft_putstr("buffer:\t");
-	ft_putstr(input_buffer->buffer);
-	ft_putstr("\nlength:\t");
-	ft_putint(input_buffer->input_length);
-	ft_putstr("\n");
-}
-
-void print_prompt(void) { ft_putstr("my-own-db > "); }
-
 void print_row(Row *row)
 {
 	ft_putstr("(");
