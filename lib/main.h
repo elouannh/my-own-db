@@ -81,14 +81,20 @@ typedef struct STable
 	void *pages[TABLE_MAX_PAGES];
 } Table;
 
+// repl.c
+
 InputBuffer* create_input_buffer(void);
 void read_input_buffer(InputBuffer* input_buffer);
+ParsedArgs *get_parsed_args();
 MetaCommandResult do_meta_command(InputBuffer* input_buffer);
 PrepareResult prepare_statement(InputBuffer *input_buffer, Statement *statement, ParsedArgs *parsed_args);
 ExecuteResult execute_insert(Statement *statement, Table *table);
 ExecuteResult execute_select(Table *table);
 ExecuteResult execute_statement(Statement *statement, Table *table);
 int repl_inputs(Table *table, int loop);
+
+// utils.c
+
 ssize_t ft_strncmp(char *s1, char *s2, ssize_t n);
 int is_charset_member(char c, char *charset);
 size_t count_words(char *s, char *charset);

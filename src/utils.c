@@ -67,59 +67,12 @@ size_t count_words(char *s, char *charset) {
 char *ft_strncpy(char *dest, char *src, size_t n) {
 	size_t i = 0;
 
-	if (n == (size_t)-1) {
-		while (dest[i] && src[i]) {
-			dest[i] = src[i];
-			i++;
-		}
-		dest[i] = '\0';
-		return dest;
-	}
-
 	while (i < n && dest[i] && src[i]) {
 		dest[i] = src[i];
 		i++;
 	}
 	dest[i] = '\0';
 	return dest;
-}
-
-void ft_split_buffer(char *s, char *charset, ParsedArgs *parsed_args) {
-	size_t words_count = count_words(s, charset);
-	char **words = malloc(words_count * sizeof(char *));
-
-	if (!words)
-		return ;
-
-	size_t i = 0;
-	size_t w = 0;
-	ssize_t current_word_len = 0;
-	while (w < words_count && s[i]) {
-		current_word_len = 0, i = 0;
-
-		while (*s && is_charset_member(*s, charset))
-			s++;
-		while (s[current_word_len] && !is_charset_member(s[current_word_len], charset))
-			current_word_len++;
-
-		words[w] = malloc(sizeof(char) * (current_word_len + 1));
-
-		if (!words[w]) {
-			size_t clearmem = 0;
-
-			while (clearmem < w) free(words[clearmem++]);
-			free(words);
-			return ;
-		}
-
-		ft_strncpy(words[w], s, current_word_len);
-		words[w][current_word_len] = '\0';
-		s += current_word_len;
-		w++;
-	}
-
-	parsed_args->args = words;
-	parsed_args->parsed_args = words_count;
 }
 
 void ft_putchar(char c) {

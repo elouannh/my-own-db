@@ -36,10 +36,32 @@ InputBuffer* create_input_buffer(void)
 	return buffer;
 }
 
-void read_input_buffer(InputBuffer* input_buffer)
+ParsedArgs *get_parsed_args(InputBuffer *input_buffer) {
+	ParsedArgs *parsed_args = malloc(sizeof(ParsedArgs));
+
+
+	if (!parsed_args)
+		return NULL;
+
+	size_t words_count = count_words(input_buffer->buffer, " ");
+
+	char **result = (char **)malloc(sizeof(char *) * 1);
+
+	if (!result)
+		return NULL;
+
+	char *s = input_buffer->buffer;
+	size_t w = 0;
+
+	parsed_args->args = result;
+	parsed_args->parsed_args = words_count;
+	return parsed_args;
+}
+
+void read_input_buffer(InputBuffer *input_buffer)
 {
-	if (input_buffer->buffer == NULL)
-		input_buffer->buffer = (char *)malloc(sizeof(char) * MAX_LEN);
+	if (!input_buffer->buffer)
+		return ;
 
 	int i = MAX_LEN;
 	int j = 0;
@@ -187,9 +209,8 @@ int repl_inputs(Table *table, int loop)
 		ft_putstr("my-own-db > ");
 		read_input_buffer(input_buffer);
 
-		ParsedArgs parsed_args;
-		ft_split_buffer(input_buffer->buffer, " ", &parsed_args);
-		print_parsed_args(&parsed_args);
+		ParsedArgs *parsed_args = get_parsed_args(input_buffer);
+		print_parsed_args(parsed_args);
 
 		if (input_buffer->buffer[0] == '.')
 		{
@@ -207,7 +228,7 @@ int repl_inputs(Table *table, int loop)
 
 		Statement statement;
 
-		switch (prepare_statement(input_buffer, &statement, &parsed_args))
+		switch (prepare_statement(input_buffer, &statement, parsed_args))
 		{
 		case (PREPARE_SUCCESS):
 			break;
